@@ -624,6 +624,17 @@ h2.section-title em{font-style:italic;color:var(--green-600)}
 .pcat__btitle{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.02;margin:.6rem 0 .6rem;letter-spacing:-.02em}
 .pcat__bdesc{max-width:60ch;color:rgba(255,255,255,.85);font-size:clamp(1rem,1.4vw,1.15rem)}
 .pcat__grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1.1rem}
+/* MOBILE GRID FIX (Category 1 only): .pcat__grid uses [data-reveal],
+   which stays opacity:0 until scroll-triggered JS adds .in-view.
+   Category 1 has far more cards (60) than any other category, making
+   its grid many times taller than a mobile viewport, so that trigger
+   is effectively never satisfied on mobile and the cards stay
+   invisible while still reserving their layout space. This forces
+   only #cat-1's grid visible on small screens; every other category's
+   scroll-reveal animation (and all desktop behavior) is untouched. */
+@media(max-width:860px){
+  #cat-1 .pcat__grid{opacity:1;transform:none}
+}
 .pcard{background:var(--paper);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow-sm);border:1px solid rgba(18,32,26,.06);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
 .pcard:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
 .pcard__img{aspect-ratio:1/1;overflow:hidden;background:var(--ivory-2)}
