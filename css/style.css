@@ -318,6 +318,25 @@ h2.section-title em{font-style:italic;color:var(--green-600)}
 .float-card b{font-family:var(--serif);display:block;font-size:1.5rem;color:var(--green-700)}
 .float-card span{font-size:.8rem;color:var(--muted)}
 
+/* MOBILE IMAGE FIX (Issue 1 & 2): on small screens the card's desktop-sized
+   padding/font/max-width takes up most of the short mobile image height,
+   hiding the shop photo underneath it. We keep the same card (position,
+   colors, rounded corners, content) but shrink it into a slim full-width
+   band anchored to the bottom edge so the photo above it stays visible. */
+@media(max-width:600px){
+  .float-card{
+    left:.7rem;
+    right:.7rem;
+    bottom:.7rem;
+    max-width:none;
+    width:auto;
+    padding:.75rem .95rem;
+    border-radius:14px;
+  }
+  .float-card b{font-size:1.05rem}
+  .float-card span{font-size:.72rem}
+}
+
 /* chapters (manifesto) */
 .chapter{display:grid;grid-template-columns:auto 1fr;gap:2rem;padding:2.4rem 0;border-top:1px solid var(--line)}
 .on-dark .chapter{border-top:1px solid var(--line-light)}
@@ -587,7 +606,16 @@ h2.section-title em{font-style:italic;color:var(--green-600)}
    PRODUCTS PAGE v8 — category banners + product image cards
    ============================================================ */
 .pcat{margin-bottom:clamp(4rem,8vw,7rem);scroll-margin-top:110px}
-.pcat__banner{position:relative;border-radius:var(--radius-lg);overflow:hidden;padding:clamp(2.2rem,5vw,4rem);min-height:clamp(220px,26vw,330px);display:flex;flex-direction:column;justify-content:flex-end;color:#fff;margin-bottom:2.6rem;box-shadow:var(--shadow)}
+.pcat__banner{position:relative;border-radius:var(--radius-lg);overflow:hidden;padding:clamp(2.2rem,5vw,4rem);min-height:clamp(220px,26vw,330px);display:flex;flex-direction:column;justify-content:flex-end;color:#fff;margin-bottom:2.6rem;box-shadow:var(--shadow);background-color:var(--green-800)}
+/* MOBILE IMAGE FIX (Issue 3): the banner photo is only painted by the
+   ::before layer below. It has no fallback of its own, so on a slower
+   mobile connection (where the external Unsplash photo can load slower
+   or fail before the desktop-cached version would) the banner rendered
+   as an empty white gap with invisible white text on it. This fallback
+   background-color is hidden behind the photo once it loads (no visual
+   change when everything loads normally) and only shows through if that
+   external image is ever slow/unavailable, keeping the banner visible
+   and the heading/description readable either way. */
 .pcat__banner::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center;background-image:var(--img);transform:scale(1.04);transition:transform 1.4s var(--ease)}
 .pcat:hover .pcat__banner::before{transform:scale(1.12)}
 .pcat__banner::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(8,40,29,.92),rgba(8,40,29,.32) 72%)}
